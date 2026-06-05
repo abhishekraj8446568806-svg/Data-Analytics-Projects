@@ -1,0 +1,63 @@
+table Products
+	lineageTag: 7600d336-7fbe-4082-ba02-60433fd8163e
+
+	column 'Product ID'
+		dataType: string
+		lineageTag: 2bbc0f73-e1c2-48db-a9a6-583872f51c5c
+		summarizeBy: none
+		sourceColumn: Product ID
+
+		annotation SummarizationSetBy = Automatic
+
+	column Category
+		dataType: string
+		lineageTag: 98700673-e42e-465a-a0e3-c5c9a95a4aa0
+		summarizeBy: none
+		sourceColumn: Category
+
+		annotation SummarizationSetBy = Automatic
+
+	column Sub-Category
+		dataType: string
+		lineageTag: cbed1826-e19d-44c5-99f4-6de3e7e1f490
+		summarizeBy: none
+		sourceColumn: Sub-Category
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Product Name'
+		dataType: string
+		lineageTag: 0dd36db5-5d22-48c5-bf39-e79d27cfdba9
+		summarizeBy: none
+		sourceColumn: Product Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'List price'
+		dataType: int64
+		formatString: 0
+		lineageTag: ecdac3f0-06c5-45ce-a9e9-a8aefc2dbd8c
+		summarizeBy: none
+		sourceColumn: List price
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Products = m
+		mode: import
+		source =
+				let
+				    Source = Excel.Workbook(File.Contents("C:\Users\Abhishek Raj\Downloads\QUESTION_Transformation3POWERBI.xlsx"), null, true),
+				    Products_Sheet = Source{[Item="Products",Kind="Sheet"]}[Data],
+				    #"Promoted Headers" = Table.PromoteHeaders(Products_Sheet, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"Product ID", type text}, {"Category", type text}, {"Sub-Category", type text}, {"Product Name", type text}, {"List price", Int64.Type}, {"Column6", type any}, {"Column7", type any}, {"Column8", type any}, {"Column9", type any}, {"Column10", type any}, {"Column11", type any}, {"Column12", type any}, {"Column13", type any}, {"Column14", type any}, {"Column15", type any}, {"Column16", type any}, {"Column17", type any}, {"Column18", type any}, {"Column19", type any}, {"Column20", type any}, {"Column21", type any}, {"Column22", type any}}),
+				    #"Removed Columns" = Table.RemoveColumns(#"Changed Type",{"Column6", "Column7", "Column8", "Column9", "Column10", "Column11", "Column12", "Column13", "Column14", "Column15", "Column16", "Column17", "Column18", "Column19", "Column20", "Column21", "Column22"}),
+				    #"Removed Errors" = Table.RemoveRowsWithErrors(#"Removed Columns", {"Product ID", "Category", "Sub-Category", "Product Name", "List price"}),
+				    #"Removed Duplicates" = Table.Distinct(#"Removed Errors", {"Product ID"}),
+				    #"Removed Blank Rows" = Table.SelectRows(#"Removed Duplicates", each not List.IsEmpty(List.RemoveMatchingItems(Record.FieldValues(_), {"", null})))
+				in
+				    #"Removed Blank Rows"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

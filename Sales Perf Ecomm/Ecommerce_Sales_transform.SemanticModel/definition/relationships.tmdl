@@ -1,0 +1,27 @@
+relationship 7dcf7191-0118-4aaa-b3c9-3dfc484ecf44
+	joinOnDateBehavior: datePartOnly
+	fromColumn: Dates.Date
+	toColumn: LocalDateTable_f0541822-94f6-42f7-b619-e7498bac87db.Date
+
+relationship 482638eb-2922-48d9-a33f-b870628b5e01
+	joinOnDateBehavior: datePartOnly
+	fromColumn: Sales.'Ship Date'
+	toColumn: LocalDateTable_1a058a60-14a7-405a-8304-130300cbdf86.Date
+
+relationship 5385c004-7836-495e-823d-a230f4284400
+	joinOnDateBehavior: datePartOnly
+	fromColumn: Sales.'Delivery Date'
+	toColumn: LocalDateTable_2017c5bc-0b55-4dec-90ec-9558f9df2717.Date
+
+relationship AutoDetected_96ed7cb4-bbbc-4566-82f4-af7684225172
+	fromColumn: Sales.'Customer ID'
+	toColumn: Customers.'Customer ID'
+
+relationship AutoDetected_93ecfebe-4f9b-44d3-a132-21ca2ef1bdbf
+	fromColumn: Sales.'Product ID'
+	toColumn: Products.'Product ID'
+
+relationship cfb6481c-c337-af72-084e-732ab1d91210
+	fromColumn: Sales.'Order Date'
+	toColumn: Dates.Date
+
